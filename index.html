@@ -36,7 +36,7 @@
         console.log("here is the res",res)
         const data = await res.json();
         console.log("here is the data",data)
-        const signatureHTML = data.signatureHTML || "<p>--<br>Your Default Signature</p>";
+        const signatureHTML = data.data || "<p>--<br>Your Default Signature</p>";
 
         Office.context.mailbox.item.body.setAsync(
           signatureHTML,
