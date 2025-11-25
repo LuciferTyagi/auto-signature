@@ -24,9 +24,9 @@
 
         // Make sure this API is served over HTTPS in production
         const res = await fetch(`https://piercingly-cavernous-laura.ngrok-free.dev/api/signature/get?email=${email}`);
-        
+        console.log("here is the res",res)
         const data = await res.json();
-
+console.log("here is the data",data)
         const signatureHTML = data.signatureHTML || "<p>--<br>Your Default Signature</p>";
 
         Office.context.mailbox.item.body.setAsync(
