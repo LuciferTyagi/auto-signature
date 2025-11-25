@@ -1,9 +1,15 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Auto Signature</title>
+</head>
 <body>
-  <p>fdfd</p>
+  <p>Loading signature...</p>
+
+  <!-- Office.js library -->
   <script src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
+
   <script>
     Office.onReady(info => {
       if (info.host === Office.HostType.Outlook) {
@@ -12,25 +18,32 @@
     });
 
     async function autoInsertSignature() {
-      const email = Office.context.mailbox.userProfile.emailAddress;
-      console.log("Email:", email);
       try {
-        const res = await fetch(`http://localhost:5000/api/signature/get?email=${email}`);
-        const { signatureHTML } = await res.json();
+        const email = Office.context.mailbox.userProfile.emailAddress;
+        console.log("Current Email:", email);
 
-        Office.context.mailbox.item.body.setAsync(signatureHTML, { coercionType: "html" }, (asyncResult) => {
-          if (asyncResult.status === Office.AsyncResultStatus.Succeeded) {
-            console.log("Signature inserted!");
-          } else {
-            console.error(asyncResult.error);
+        // Make sure this API is served over HTTPS in production
+        const res = await fetch(`https://your-api-domain.com/api/signature/get?email=${encodeURIComponent(email)}`);
+        const data = await res.json();
+
+        const signatureHTML = data.signatureHTML || "<p>--<br>Your Default Signature</p>";
+
+        Office.context.mailbox.item.body.setAsync(
+          signatureHTML,
+          { coercionType: "html" },
+          (asyncResult) => {
+            if (asyncResult.status === Office.AsyncResultStatus.Succeeded) {
+              console.log("Signature inserted successfully!");
+            } else {
+              console.error("Error inserting signature:", asyncResult.error);
+            }
           }
-        });
+        );
 
       } catch (err) {
-        console.error("Error inserting signature", err);
+        console.error("Error fetching or inserting signature:", err);
       }
     }
   </script>
 </body>
-
 </html>
