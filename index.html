@@ -23,7 +23,7 @@
         console.log("Current Email:", email);
 
         // Make sure this API is served over HTTPS in production
-        const res = await fetch(`https://localhost:5000/api/signature/get?email=${email}`);
+        const res = await fetch(`https://piercingly-cavernous-laura.ngrok-free.dev/api/signature/get?email=${email}`);
         
         const data = await res.json();
 
