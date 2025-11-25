@@ -23,7 +23,7 @@
         console.log("Current Email:", email);
 
         // Make sure this API is served over HTTPS in production
-        const res = await fetch(`http://localhost:5000/api/signature/get?email=${encodeURIComponent(email)}`);
+        const res = await fetch(`https://localhost:5000/api/signature/get?email=${email}`);
         
         const data = await res.json();
 
